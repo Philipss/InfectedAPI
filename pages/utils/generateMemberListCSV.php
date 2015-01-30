@@ -14,10 +14,6 @@ if (Session::isAuthenticated()) {
 				$userList = EventHandler::getMembersAndParticipantsForEvents($eventList);
 				
 				if (!empty($userList)) {
-					echo '<meta charset="UTF-8">';
-					
-					echo '<p>Fant ' . count($userList) . ' brukere i databasen.</p>';
-					
 					$fieldList = array(array('Navn:', 'E-post:', 'Telefon:', 'Adresse:', 'Fødselsdato:'));
 					
 					foreach ($userList as $value) {
@@ -36,7 +32,7 @@ if (Session::isAuthenticated()) {
 					// tell the browser it's going to be a csv file
 					header('Content-Type: application/csv');
 					// tell the browser we want to save it instead of displaying it
-					header('Content-Disposition: attachement; filename="' . 'test.csv' . '";');
+					header('Content-Disposition: attachement; filename="' . 'Medlemmsliste ' .  $year . '.csv' . '";');
 					// make php send the generated csv lines to the browser
 					fpassthru($fp);
 					
