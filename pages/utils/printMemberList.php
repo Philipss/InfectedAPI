@@ -18,31 +18,7 @@ if (Session::isAuthenticated()) {
 					
 					echo '<p>Fant ' . count($userList) . ' brukere i databasen.</p>';
 					
-					$fieldList = array(array('Navn:', 'E-post:', 'Telefon:', 'Adresse:', 'Fødselsdato:'));
-					
-					foreach ($userList as $value) {
-						array_push($fieldList, array($value->getFullName(), $value->getEmail(), '', '', ''));
-					}
-					
-					$fp = fopen('php://memory', 'w');
-
-					foreach ($fieldList as $field) {
-						fputcsv($fp, $field, ';');
-					}
-					
-					// rewrind the "file" with the csv lines
-					fseek($fp, 0);
-
-					// tell the browser it's going to be a csv file
-					header('Content-Type: application/csv');
-					// tell the browser we want to save it instead of displaying it
-					header('Content-Disposition: attachement; filename="' . 'test.csv' . '";');
-					// make php send the generated csv lines to the browser
-					fpassthru($fp);
-					
-					fclose($fp);
-					
-					/* echo '<table>';
+					echo '<table>';
 						echo '<tr>';
 							echo '<th>Navn:</th>';
 							echo '<th>E-post:</th>';
@@ -60,7 +36,7 @@ if (Session::isAuthenticated()) {
 								echo '<td>' . date('d.m.Y', $value->getBirthdate()) . '</th>';
 							echo '</tr>';
 						}
-					echo '</table>'; */
+					echo '</table>';
 				} else {
 					echo 'Ingen brukere funnet.';
 				}
