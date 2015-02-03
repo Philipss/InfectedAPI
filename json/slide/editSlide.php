@@ -1,7 +1,6 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/agendahandler.php';
-require_once 'handlers/eventhandler.php';
+require_once 'handlers/slidehandler.php';
 
 $result = false;
 $message = null;
@@ -10,26 +9,34 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-<<<<<<< HEAD
 		$user->hasPermission('event.screen')) {
-=======
-		$user->hasPermission('event.agenda')) {
->>>>>>> origin/master
-		if (isset($_GET['title']) &&
+		if (isset($_GET['id']) &&
+			isset($_GET['title']) &&
 			isset($_GET['description']) &&
 			isset($_GET['startTime']) &&
 			isset($_GET['startDate']) &&
+			isset($_GET['endTime']) &&
+			isset($_GET['endDate']) &&
+			is_numeric($_GET['id']) &&
 			!empty($_GET['title']) &&
 			!empty($_GET['description']) &&
 			!empty($_GET['startTime']) &&
-			!empty($_GET['startDate'])) {
-			$name = strtolower(str_replace(' ', '-', $_GET['title']));
+			!empty($_GET['startDate']) &&
+			!empty($_GET['endTime']) &&
+			!empty($_GET['endDate'])) {) {
+			$slide = SlideHandler::getSlide($_GET['id']);
 			$title = $_GET['title'];
 			$description = $_GET['description'];
 			$startTime = $_GET['startDate'] . ' ' . $_GET['startTime'];
+			$endTime = $_GET['endDate'] . ' ' . $_GET['endTime'];
+			$published = isset($_GET['published']) ? $_GET['published'] : 0;
 			
-			AgendaHandler::createAgenda(EventHandler::getCurrentEvent(), $name, $title, $description, $startTime);
-			$result = true;
+			if ($slide != null) {
+				SlideHandler::updateSlide($slide, $title, $description, $startTime, $endTime, $published);
+				$result = true;
+			} else {
+				$message = 'Sliden du prøver å endre finnes ikke.';
+			}
 		} else {
 			$message = 'Du har ikke fyllt ut alle feltene!';
 		}

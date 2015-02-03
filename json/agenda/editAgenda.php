@@ -9,7 +9,11 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
+<<<<<<< HEAD
 		$user->hasPermission('event.screen')) {
+=======
+		$user->hasPermission('event.agenda')) {
+>>>>>>> origin/master
 		if (isset($_GET['id']) &&
 			isset($_GET['title']) &&
 			isset($_GET['description']) &&
@@ -24,9 +28,16 @@ if (Session::isAuthenticated()) {
 			$title = $_GET['title'];
 			$description = $_GET['description'];
 			$startTime = $_GET['startDate'] . ' ' . $_GET['startTime'];
+<<<<<<< HEAD
 			
 			if ($agenda != null) {
 				AgendaHandler::updateAgenda($agenda, $title, $description, $startTime);
+=======
+			$published = isset($_GET['published']) ? $_GET['published'] : 0;
+			
+			if ($agenda != null) {
+				AgendaHandler::updateAgenda($agenda, $title, $description, $startTime, $published);
+>>>>>>> origin/master
 				$result = true;
 			} else {
 				$message = 'Agendaen du prøver å endre finnes ikke.';
